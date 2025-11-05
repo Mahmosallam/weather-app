@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather-app
+  namespace: weather
+spec:
+  replicas: 2
+  selector: 
+     matchLabels:
+       app: weather
+  template:
+    metadata:
+      labels:
+        app: weather
+    spec:
+      containers:
+       - name: weather
+         image: weather-img:v4
+         imagePullPolicy: Never
+         ports:
+           - containerPort: 5000
+         env:
+           - name: APIKEY
+             valueFrom:
+               secretKeyRef:
+                 name: weather-secret
+                 key: api-key
+
+         livenessProbe:
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+
+         readinessProbe:
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 3
