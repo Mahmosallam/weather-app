@@ -14,34 +14,40 @@ spec:
         app: auth
     spec:
       containers:
-       - name: auth
-         image: auth-img:v2
-         imagePullPolicy: Never
-         ports:
-           - containerPort: 8080
-         env:
-           - name: DB_NAME
-             valueFrom:
-               secretKeyRef:
-                 name: mysql-secret
-                 key: mysql-db
-           - name: DB_USER
-             valueFrom:
-               secretKeyRef:
-                 name: mysql-secret
-                 key: mysql-user
-           - name: DB_PASSWORD
-             valueFrom:
-               secretKeyRef:
-                 name: mysql-secret
-                 key: mysql-pass
-           - name: DB_HOST
-             value: mysql-svc.my-sql-db.svc.cluster.local
-           - name: DB_PORT
-             value: "3306"
-           - name: SECRET_KEY
-             valueFrom:
-               secretKeyRef:
-                 name: mysql-secret
-                 key: secert-key    
-        
+        - name: auth
+          image: auth-img:v2
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-db
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-pass
+            - name: DB_HOST
+              value: mysql-svc.my-sql-db.svc.cluster.local
+            - name: DB_PORT
+              value: "3306"
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: secert-key    
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "512Mi"
+              cpu: "400m"

@@ -18,27 +18,42 @@ $(document).ready(() => {
             type: 'get',
             url: '/weather/' + city,
             success: function (result) {
+                // Extract the first forecast entry
+                const current = result.list[0];
+                const weather = current.weather[0];
+                
                 $('#result').show();
-                $('#weather_icon').attr('src', 'https:' + result.current.condition.icon);
-                $('#weather_text').html(result.current.condition.text);
-                $('#city_name').html(result.location.name);
-                $('#country_name').html(result.location.country);
+                
+                // Weather icon from OpenWeatherMap
+                $('#weather_icon').attr('src', `https://openweathermap.org/img/wn/${weather.icon}@2x.png`);
+                
+                // Weather description
+                $('#weather_text').html(weather.description);
+                
+                // City and country
+                $('#city_name').html(result.city.name);
+                $('#country_name').html(result.city.country);
+                
+                // Temperature (convert from Kelvin to Celsius and Fahrenheit)
+                const tempC = (current.main.temp - 273.15).toFixed(1);
+                const tempF = ((current.main.temp - 273.15) * 9/5 + 32).toFixed(1);
                 $('#temp').html(
-                    result.current.temp_c +
-                    '&deg;C&nbsp;-&nbsp;' +
-                    result.current.temp_f +
-                    '&deg;F'
+                    tempC + '&deg;C&nbsp;-&nbsp;' + tempF + '&deg;F'
                 );
+                
+                // Feels like temperature
+                const feelsC = (current.main.feels_like - 273.15).toFixed(1);
+                const feelsF = ((current.main.feels_like - 273.15) * 9/5 + 32).toFixed(1);
                 $('#feels_like').html(
-                    result.current.feelslike_c +
-                    '&deg;C&nbsp;-&nbsp;' +
-                    result.current.feelslike_f +
-                    '&deg;F'
+                    feelsC + '&deg;C&nbsp;-&nbsp;' + feelsF + '&deg;F'
                 );
+                
+                // Hide the spinner after data is displayed
                 spinner.hide();
             },
             error: function (error) {
                 console.error(error);
+                alert('Could not fetch weather data. Please try again.');
                 // Hide the spinner if there is an error
                 spinner.hide();
             },

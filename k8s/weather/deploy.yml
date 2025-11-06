@@ -14,19 +14,19 @@ spec:
         app: weather
     spec:
       containers:
-       - name: weather
-         image: weather-img:v4
-         imagePullPolicy: Never
-         ports:
-           - containerPort: 5000
-         env:
-           - name: APIKEY
-             valueFrom:
-               secretKeyRef:
-                 name: weather-secret
-                 key: api-key
+        - name: weather
+          image: weather-img:v4
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000
+          env:
+            - name: APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: weather-secret
+                  key: api-key
 
-         livenessProbe:
+          livenessProbe:
             httpGet:
               path: /
               port: 5000
@@ -34,10 +34,18 @@ spec:
             periodSeconds: 5
             failureThreshold: 3
 
-         readinessProbe:
+          readinessProbe:
             httpGet:
               path: /
               port: 5000
             initialDelaySeconds: 5
             periodSeconds: 5
             failureThreshold: 3
+
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "512Mi"
+              cpu: "400m"

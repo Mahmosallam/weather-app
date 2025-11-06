@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ui-to-auth
+  namespace: auth
+spec:
+  podSelector:
+    matchLabels:
+      app: auth      
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: ui
+          podSelector:
+            matchLabels:
+              app: ui
+      ports:
+        - protocol: TCP
+          port: 8080

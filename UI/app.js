@@ -15,7 +15,7 @@ require('dotenv').config();
 
 // Configuration
 const port = process.env.PORT || 3000;
-const secretKey = process.env.SECRET_KEY || '79ex1vwKRk6YM/reXvDu8+9pJoSSg7tYpuQ9iNn+J4g=';
+const secretKey = process.env.SECRET_KEY || 'xco0sr0fh4e52x03g9mv';
 const weatherHost = process.env.WEATHER_HOST || 'localhost';
 const weatherPort = process.env.WEATHER_PORT || 5000;
 const authHost = process.env.AUTH_HOST || 'localhost';

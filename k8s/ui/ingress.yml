@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myingress
+  namespace: ui
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts: []
+      secretName: ingress-tls
+  rules:
+    #host: lb-382757127.us-east-1.elb.amazonaws.com
+  -  http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: ui-svc
+            port: 
+              number: 3000

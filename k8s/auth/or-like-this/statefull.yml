@@ -8,7 +8,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-     app: mysql
+      app: mysql
   template:
     metadata:
       labels:
@@ -18,22 +18,29 @@ spec:
         - name: mysql
           image: mariadb:10.6
           ports:
-           - containerPort: 3306
+            - containerPort: 3306
           env:
-           - name: MYSQL_ROOT_PASSWORD
-             valueFrom:
-               secretKeyRef:
-                 name: mysql-secret
-                 key: root-pass
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: root-pass
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
           volumeMounts:
-           - name: mysql-data
-             mountPath: /var/lib/mysql
+            - name: mysql-data
+              mountPath: /var/lib/mysql
   volumeClaimTemplates:
-  - metadata:
-      name: mysql-data
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 5Gi
-      storageClassName: local-path
+    - metadata:
+        name: mysql-data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 5Gi
+        storageClassName: local-path
